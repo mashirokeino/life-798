@@ -27,7 +27,9 @@ public class IlifeApi {
     static final String GATEWAY = BuildConfig.API_GATEWAY;
     static final String CID = BuildConfig.API_CID;
     private static final String SIGN_SALT = BuildConfig.SIGN_SALT;
-    private static final String UA = "WaterWidget/" + BuildConfig.VERSION_NAME + " (Android)";
+    // 对应官方生产版本号 (com.cloudora.android 3.1.9)，用于通过服务端版本强制核验
+    private static final String OFFICIAL_VERSION = "3.1.9";
+    private static final String UA = "Android_ilife798_" + OFFICIAL_VERSION;
     private static final String DEVICE_LOGIN_REJECTED_MESSAGE =
             "设备登录信息未被接受，请检查是否填反或重新完成设备登录";
 
@@ -79,6 +81,7 @@ public class IlifeApi {
                 c = (HttpURLConnection) new URL(u).openConnection();
                 c.setRequestMethod("GET");
                 c.setRequestProperty("User-Agent", UA);
+                c.setRequestProperty("VersionCode", OFFICIAL_VERSION);
                 c.setConnectTimeout(15000);
                 c.setReadTimeout(15000);
                 InputStream is = c.getInputStream();
@@ -428,7 +431,7 @@ public class IlifeApi {
             String token = useApp ? acc.appToken : acc.token;
             String appType = useApp ? "1,1" : "1,5";
             String url = GATEWAY + "/dev/start?did=" + enc(did)
-                    + "&upgrade=true&ptype=91&rcp=false";
+                    + "&upgrade=true&ptype=91&rcp=false&cnt=1";
             try {
                 String body = httpRawApp("GET", url, null, token, appType);
                 JSONObject json = new JSONObject(body);
@@ -475,7 +478,7 @@ public class IlifeApi {
                 return;
             }
             String url = GATEWAY + "/dev/start?did=" + enc(did)
-                    + "&upgrade=true&ptype=91&rcp=false";
+                    + "&upgrade=true&ptype=91&rcp=false&cnt=1";
             try {
                 String body = httpRawApp("GET", url, null, appToken, "1,1");
                 JSONObject json = new JSONObject(body);
@@ -628,6 +631,7 @@ public class IlifeApi {
             c.setConnectTimeout(15000);
             c.setReadTimeout(15000);
             c.setRequestProperty("User-Agent", UA);
+            c.setRequestProperty("VersionCode", OFFICIAL_VERSION);
             c.setRequestProperty("Content-Type", "application/json");
             c.setRequestProperty("ApplicationType", appType);
             c.setRequestProperty("Accept-Language", "zh-Hans-CN;q=1");
