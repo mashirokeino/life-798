@@ -32,7 +32,7 @@ jobs:
           java-version: '21'
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Install required Android SDK packages
         run: sdkmanager "platforms;android-37.0" "build-tools;36.0.0"
@@ -96,7 +96,7 @@ jobs:
           java-version: '21'
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Install required Android SDK packages
         run: sdkmanager "platforms;android-37.0" "build-tools;36.0.0"
